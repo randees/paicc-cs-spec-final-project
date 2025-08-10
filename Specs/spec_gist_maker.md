@@ -37,22 +37,22 @@ CREATE modules/http.cs
     CREATE method Post(url, headers, body) -> dict or throw
 
 UPDATE modules/dataTypes.cs
-    CREATE class Files() to support the following structure:
+    CREATE method Files() to support the following structure:
     {"files": [
         "README.md": {"content": Helloworld}
     ]}
-    CREATE class Gist() to support the following structure:
+    CREATE method Gist() to support the following structure:
         {"description": "example of a gist", "public": false, "files":Files}
-    CREATE class GistFile
+    CREATE method GistFile
 
 CREATE modules/files.cs
-    CREATE method PullFiles(directoryPath) -> files[] or throw
+    CREATE method pullFiles(directoryPath) -> files[] or throw
 
 cs```
 2. ```cs
 
 CREATE modules/gist.cs
-    CREATE method CreateGist(gist: Gist) -> dict or throw
+    CREATE method createGist(gist: Gist) -> dict or throw
         call modules/http.post(url, headers, body) -> dict or throw
     example code:
         curl -L \
@@ -62,4 +62,14 @@ CREATE modules/gist.cs
         -H "X-Gihub-api-version: 2022-11-28" \
         https://api.gihub.com/gist \
 
+cs```
+3. ```cs
+UPDATE program.cs
+    CREATE method main() - > none
+    parse cli args
+    call modules/files.pullFiles(directoryPath) -> gistFiles[]
+    call modules/gist.createGist(Gist) -> dict
+    print progress
+    print errors if needed
+    call main
 cs```
